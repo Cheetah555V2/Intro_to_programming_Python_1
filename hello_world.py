@@ -1,9 +1,12 @@
 import string
 import time
 import os
+
+
 word = "Hello World"
 curr_word = ""
 index = 0
+
 
 while curr_word != word:
     for i in " " + string.ascii_letters:
@@ -13,6 +16,7 @@ while curr_word != word:
             curr_word += i
             index += 1
             break
+
 
 os.system("cls")
 print(curr_word)

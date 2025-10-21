@@ -7,6 +7,7 @@ word = "Hello World"
 curr_word = ""
 index = 0
 
+os.system("cls")
 
 while curr_word != word:
     for i in " " + string.ascii_letters:

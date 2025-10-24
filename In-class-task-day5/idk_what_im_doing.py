@@ -1,1 +1,1 @@
-x=int(input());print("B")if(x%2==0 and x%3!=0)else(print("C")if(x%2==0)else(print("D")))
+x=float(input());print("B")if(x%2==0 and x%3!=0)else(print("C")if(x%2==0)else(print("D")))

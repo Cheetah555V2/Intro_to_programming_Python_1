@@ -2,6 +2,7 @@ import math
 import msvcrt
 import os
 import time
+import random
 
 """
 |==============================================
@@ -39,35 +40,33 @@ def trial_division_primitive_test(number):
     return True
 
 
-def is_prime(number):
-    pass
+def miller_rabin_primitive_test(number, k=10):
+    if number <= 2:
+        return False
+    
+    s = 0
+    d = number - 1
+    while d % 2 == 0:
+        d //= 2
+        s += 1
+    
 
+    for _ in range(k):
+        a = random.randint(2, number - 2)
+        x = pow(a, d, number)
+        if x == 1 or x == number - 1:
+            continue
 
-"""
-|==============================================
-|                User Interface
-|==============================================
-"""
-
-
-def UI(page, input_data=None):
-    if page == "menu":
-        print("""RSA encryption system menu
-press the following keys to select an option:
-(1) Checking for primality
-(2) Generating a pair of RSA keys
-(3) Encrypting a message
-(4) Decrypting a message
-(Q) Quit program\
-""")
-    elif page == "primality_test_1":
-        print("Primality Test")
-        print("Enter an integer to test for primality: ")
-    elif page == "primality_test_2":
-        print(f"The number {input_data[0]} is {input_data[1]}")
-        print(f"The program took {input_data[2]:.6f} to complete.\n")
-        print(f"(R) to do primality test again or\n\
-(M) to return to main menu.")
+        for _ in range(s):
+            y = (x * x) % number
+            if (y == 1) and x != 1 and x != number - 1:
+                return False
+            x = y
+        
+        if y != 1:
+            return False
+    
+    return True
 
 """
 |==============================================
@@ -77,39 +76,111 @@ press the following keys to select an option:
 
 while True:
     clear_console()
-    UI("menu")
+    print("""RSA encryption system menu
+press the following keys to select an option:
+(1) Checking for primality
+(2) Generating a pair of RSA keys
+(3) Encrypting a message
+(4) Decrypting a message
+(Q) Quit program\
+""")
+    
     choice = get_char().lower()
+
     if choice == "1":
 
         while True:
 
             clear_console()
-            UI("primality_test_1")
+            print("Primality Test\nEnter an integer to test for primality: ")
 
             number = int(input())
-            print("Processing... please wait.")
-            start_time = time.time()
-            result = trial_division_primitive_test(number)
-            end_time = time.time()
-            elapsed_time = end_time - start_time
+            
             clear_console()
 
-            if result:
-                UI("primality_test_2", (number, "prime", elapsed_time))
+            if number > 2*(10**12): #point where sqrt(number) = 20log^3(number)
+                # Use Miller-Rabin for large numbers
+                print("""Miller-Rabin Primality Test Selected for this number.
+Please provide a accuracy level that you want in positive integer (1-20) \
+(defalut = 10): """)
+                accuracy_level = input()
+                if accuracy_level.isdigit():
+                    accuracy_level = int(accuracy_level)
+                else:
+                    accuracy_level = 10
+                
+                print("Processing... please wait.")
+
+                start_time = time.time()
+                result = miller_rabin_primitive_test(number, accuracy_level)
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+                accuracy = max(0, (1 - (1 / (4**accuracy_level))) * 100) #in %
+                
+                clear_console()
+
+                if result:
+                    print(f"""The number {number} is Probabliy Prime with \
+{accuracy}% confidence""")
+                    print("""Do you want to check if it's definitely prime? \
+This might take up a lot of time (use trial division up to √number) (Y/N):""")
+                    while True:
+                        choice = get_char().lower()
+                        if choice == "y" or choice == "n":
+                            break
+                    
+                    if choice == "y":
+                        clear_console()
+
+                        print("Processing... please wait.")
+                        start_time = time.time()
+                        result = trial_division_primitive_test(number)
+                        end_time = time.time()
+                        elapsed_time = end_time - start_time
+
+                        clear_console()
+
+                        if result:
+                            print(f"The number {number} is Prime")
+                        else:
+                            print(f"The number {number} is Coprime")
+
+
+                else:
+                    print(f"The number {number} is Coprime")
+                
+                print(f"The program took {elapsed_time:.6f} to complete.")
+
+            
             else:
-                UI("primality_test_2", (number, "coprime", elapsed_time))
+                # Use trial division for small numbers
+                print("Processing... please wait.")
+                start_time = time.time()
+                result = trial_division_primitive_test(number)
+                end_time = time.time()
+                elapsed_time = end_time - start_time
 
-            choice = get_char().lower()
+                clear_console()
 
+                if result:
+                    print(f"The number {number} is Prime")
+                else:
+                    print(f"The number {number} is Coprime")
+
+                print(f"The program took {elapsed_time:.6f} to complete.")
+                
+
+            print("(R) to do primality test again")
+            print("(M) to return to main menu.")
+
+            while True:
+                choice = get_char().lower()
+                if choice == "r" or choice == "m":
+                    break
+            
             if choice == "r":
                 continue
             elif choice == "m":
-                clear_console()
-                break
-            else:
-                print("Invalid input, returning to main menu.")
-                time.sleep(1)
-                clear_console()
                 break
 
         continue
@@ -126,3 +197,4 @@ while True:
     elif choice == "q":
         break
 
+print()

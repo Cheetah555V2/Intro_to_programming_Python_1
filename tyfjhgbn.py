@@ -103,7 +103,7 @@ for i in lyrics:
 lyrics = "\n".join(lyrics)
 
 # 3
-print(f"Lines counter: {lyrics.count("\n")}")
+print(f"Lines counter: {lyrics.count("\n")+1}")
 
 # 4
 print(f"alphabets counter: {sum(c.isalpha() for c in lyrics)}")

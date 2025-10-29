@@ -1,29 +1,23 @@
 #include <iostream>
 #include <cmath>
-#include <vector>
 using namespace std;
 
-bool sieve_of_eratosthenes_primitive_test(long long number) {
-    vector<bool> sieve(number + 1, true);
-
-    for (int i = 0; i <= number; i++) {
-        sieve[i] = true;
+bool sieve_of_eratosthenes_primitive_test(long long number, long long k) {
+    if (number <= 2){
+        return false;
     }
 
-    sieve[0] = false;
-    sieve[1] = false;
-
-    long long limit = sqrt(number);
-
-    for (long long index = 2; index <= limit; index++) {
-        if (sieve[index]) {
-            for (int multiple = index * index; multiple <= number; multiple += index) {
-                sieve[multiple] = false;
-            }
-        }
+    long long s = 1;
+    while ((number - 1) % (pow(2,s)) == 0) {
+        s++;
     }
+    s--;
 
-    return sieve[number];
+    long long d = (number - 1) / (pow(2,s));
+
+    for (long long i = 0; i < k; i++){
+        
+    }
 }
 
 int main(){

@@ -69,7 +69,7 @@ def miller_rabin_primitive_test(number, k=10):
     return True
 
 def is_prime(number):
-    if number > 2*(10**12):
+    if number > 10**12:
         return miller_rabin_primitive_test(number, 20)
 
     return trial_division_primitive_test(number)
@@ -89,11 +89,13 @@ press the following keys to select an option:
 (2) Generating a pair of RSA keys
 (3) Encrypting a message
 (4) Decrypting a message
-(Q) Quit program\
-""")
+(Q) Quit program""")
     
-    choice = get_char().lower()
-
+    while True:
+        choice = get_char().lower()
+        if choice in ["1", "2", "3", "4", "q"]:
+            break
+    
     if choice == "1":
 
         while True:
@@ -108,8 +110,8 @@ press the following keys to select an option:
             if number > 2*(10**12): #point where sqrt(number) = 20log^3(number)
                 # Use Miller-Rabin for large numbers
                 print("""Miller-Rabin Primality Test Selected for this number.
-Please provide a accuracy level that you want in positive integer (1-20) \
-(defalut = 10): """)
+Please provide a accuracy level that you want in positive integer (1-20) (defa\
+lut = 10): """)
                 accuracy_level = input()
                 if accuracy_level.isdigit():
                     accuracy_level = int(accuracy_level)
@@ -129,8 +131,8 @@ Please provide a accuracy level that you want in positive integer (1-20) \
                 if result:
                     print(f"""The number {number} is Probabliy Prime with \
 {accuracy}% confidence""")
-                    print("""Do you want to check if it's definitely prime? \
-This might take up a lot of time (use trial division up to √number) (Y/N):""")
+                    print("""Do you want to check if it's definitely prime? Th\
+is might take up a lot of time (use trial division up to √number) (Y/N):""")
                     while True:
                         choice = get_char().lower()
                         if choice == "y" or choice == "n":
@@ -194,10 +196,18 @@ This might take up a lot of time (use trial division up to √number) (Y/N):""")
     
 
     elif choice == "2":
+        clear_console()
+
         print("How many digits of primes do you want to generate? (more digits\
 means more secure keys, but slower generation) (do not input value more than 1\
-000, python might crash):")
+000, python might crash): ", end="")        
+
         digits = int(input())
+
+        clear_console()
+
+        print("Generating... please wait.")
+
         prime_1 = random.randint(10**(digits-1), 10**(digits)-1)
         prime_2 = random.randint(10**(digits-1), 10**(digits)-1)
 
@@ -207,10 +217,17 @@ means more secure keys, but slower generation) (do not input value more than 1\
         while not is_prime(prime_2):
             prime_2 = random.randint(10**(digits-1), 10**(digits)-1)
         
-        print(f"Generated primes keys:\np = {prime_1}\nq = {prime_2}")
-        print(f"{len(str(prime_1))}\n{len(str(prime_2))}")
-        print("Press any key to return to main menu.")
+        clear_console()
 
+        confidence = (1 - (pow(1/4, 20) * (2 - pow(1/4, 20)))) * 100 # in %
+
+        if digits >= 12:
+            print(f"Generated primes keys with {confidence}% confidence that b\
+oth is prime:\np = {prime_1}\nq = {prime_2}")
+        else:
+            print(f"Generated primes keys:\np = {prime_1}\nq = {prime_2}")
+        
+        print("Press any key to return to main menu.")
         get_char()
     
 
@@ -222,5 +239,3 @@ means more secure keys, but slower generation) (do not input value more than 1\
 
     elif choice == "q":
         break
-
-print()

@@ -68,9 +68,9 @@ def miller_rabin_primitive_test(number, k=10):
     
     return True
 
-def is_prime(number):
+def is_prime(number, accuracy_level=10):
     if number > 10**12:
-        return miller_rabin_primitive_test(number, 20)
+        return miller_rabin_primitive_test(number, accuracy_level)
 
     return trial_division_primitive_test(number)
     
@@ -121,7 +121,7 @@ lut = 10): """)
                 print("Processing... please wait.")
 
                 start_time = time.time()
-                result = miller_rabin_primitive_test(number, accuracy_level)
+                result = is_prime(number, accuracy_level)
                 end_time = time.time()
                 elapsed_time = end_time - start_time
                 accuracy = max(0, (1 - (1 / (4**accuracy_level))) * 100) #in %

@@ -107,7 +107,7 @@ press the following keys to select an option:
             
             clear_console()
 
-            if number > 2*(10**12): #point where sqrt(number) = 20log^3(number)
+            if number > 10**12:
                 # Use Miller-Rabin for large numbers
                 print("""Miller-Rabin Primality Test Selected for this number.
 Please provide a accuracy level that you want in positive integer (1-20) (defa\

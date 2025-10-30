@@ -104,7 +104,7 @@ def modular_multiplicative_inverse(multiplyer, modulus_base):
 
 """
 |==============================================
-|            Sub-Sub-Main function
+|             Sub-Sub-Main function
 |==============================================
 """    
 
@@ -182,8 +182,8 @@ lut = 10): """)
                 print(f"""The number {number}\nis Probabliy Prime with \
 {accuracy}% confidence""")
                 print(f"The program took {elapsed_time:.6f} to complete.")
-                print("""Do you want to check if it's definitely prime? Th\
-is might take up a lot of time (use trial division up to √number) (Y/N):""")
+                print("""Do you want to check if it's definitely prime? This m\
+ight take up a lot of time (use trial division up to √number) (Y/N):""")
                 
                 choice = wait_for_right_input_receiver("y", "n")
                 

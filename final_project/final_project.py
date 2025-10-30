@@ -129,8 +129,9 @@ lut = 10): """)
                 clear_console()
 
                 if result:
-                    print(f"""The number {number} is Probabliy Prime with \
+                    print(f"""The number {number}\nis Probabliy Prime with \
 {accuracy}% confidence""")
+                    print(f"The program took {elapsed_time:.6f} to complete.")
                     print("""Do you want to check if it's definitely prime? Th\
 is might take up a lot of time (use trial division up to √number) (Y/N):""")
                     while True:
@@ -138,6 +139,8 @@ is might take up a lot of time (use trial division up to √number) (Y/N):""")
                         if choice == "y" or choice == "n":
                             break
                     
+                    clear_console()
+
                     if choice == "y":
                         clear_console()
 
@@ -153,12 +156,13 @@ is might take up a lot of time (use trial division up to √number) (Y/N):""")
                             print(f"The number {number} is Prime")
                         else:
                             print(f"The number {number} is Coprime")
+        
+                        print(f"The program took {elapsed_time:.6f} to complete.")
 
 
                 else:
                     print(f"The number {number} is Coprime")
-                
-                print(f"The program took {elapsed_time:.6f} to complete.")
+                    print(f"The program took {elapsed_time:.6f} to complete.")
 
             
             else:

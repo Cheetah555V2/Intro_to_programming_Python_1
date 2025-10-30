@@ -41,7 +41,7 @@ def trial_division_primitive_test(number):
 
 
 def miller_rabin_primitive_test(number, k=10):
-    if number <= 2:
+    if number <= 2 or number % 2 == 0:
         return False
     
     s = 0
@@ -62,11 +62,18 @@ def miller_rabin_primitive_test(number, k=10):
             if (y == 1) and x != 1 and x != number - 1:
                 return False
             x = y
-        
+
         if y != 1:
             return False
     
     return True
+
+def is_prime(number):
+    if number > 2*(10**12):
+        return miller_rabin_primitive_test(number, 20)
+
+    return trial_division_primitive_test(number)
+    
 
 """
 |==============================================
@@ -184,9 +191,28 @@ This might take up a lot of time (use trial division up to √number) (Y/N):""")
                 break
 
         continue
+    
 
     elif choice == "2":
-        pass
+        print("How many digits of primes do you want to generate? (more digits\
+means more secure keys, but slower generation) (do not input value more than 1\
+000, python might crash):")
+        digits = int(input())
+        prime_1 = random.randint(10**(digits-1), 10**(digits)-1)
+        prime_2 = random.randint(10**(digits-1), 10**(digits)-1)
+
+        while not is_prime(prime_1):
+            prime_1 = random.randint(10**(digits-1), 10**(digits)-1)
+        
+        while not is_prime(prime_2):
+            prime_2 = random.randint(10**(digits-1), 10**(digits)-1)
+        
+        print(f"Generated primes keys:\np = {prime_1}\nq = {prime_2}")
+        print(f"{len(str(prime_1))}\n{len(str(prime_2))}")
+        print("Press any key to return to main menu.")
+
+        get_char()
+    
 
     elif choice == "3":
         pass

@@ -92,15 +92,37 @@ def is_prime(number, accuracy_level=10):
 def RSA_encryption(unicode, public_exponent, modulus):
     return pow(unicode,public_exponent,modulus)
 
+def RSA_decryption(encrypt_code, private_exponent, modulus):
+    return pow(encrypt_code, private_exponent, modulus)
+
 def semiprime_euler_totient(prime_1, prime_2):
-    return (prime_1) * (prime_2)
+    return (prime_1-1) * (prime_2-1)
 
 def modular_multiplicative_inverse(multiplyer, modulus_base):
     # multiplyer*number ≡ 1 (mod modulus_base)
     # return multiplyer^(-1)
 
+    # Use Extended Euclidean algorithm
 
-    return inverse
+    remainder_curr = modulus_base
+    remainder_next = multiplyer
+
+    bezout_coefficients_curr = 0
+    bezout_coefficients_next = 1
+
+    while remainder_next != 0:
+        quotient = remainder_curr // remainder_next
+
+        bezout_coefficients_curr, bezout_coefficients_next = \
+            bezout_coefficients_next, bezout_coefficients_curr - (quotient * bezout_coefficients_next)
+        
+        remainder_curr, remainder_next = \
+            remainder_next, remainder_curr - (quotient * remainder_next)
+    
+    if bezout_coefficients_curr < 0:
+        bezout_coefficients_curr += modulus_base
+
+    return bezout_coefficients_curr
 
 """
 |==============================================
@@ -136,8 +158,9 @@ def public_exponent_generator(euler_totient, modulus):
     return public_exponent
 
 
-def private_exponent_generator():
-    asdasd
+def private_exponent_finder(exponent, prime_1, prime_2):
+    totient = semiprime_euler_totient(prime_1,prime_2)
+    private_exponent = modular_multiplicative_inverse(exponent, totient)
     return private_exponent
 
 
@@ -247,7 +270,7 @@ def generating_a_pair_of_RSA_keys_flow():
 
     print("How many digits of primes do you want to generate? (more digits mea\
 ns more secure keys, but slower generation) (do not input value more than 1000\
-, python might crash): ", end="")        
+, python might crash): ", end="")
 
     digits = int(input())
 
@@ -322,11 +345,13 @@ ion): ",end="")
         public_exponent = public_exponent_generator(euler_totient_n,
                                                     modulus)
         
-        private_exponent = pri
+        private_exponent = private_exponent_finder(public_exponent, prime_1, prime_2)
 
         print(f"This is your prime p, q, n (modulus), e (public exponent) and \
 d (private exponent)\np = {prime_1}\nq = {prime_2}\nn = {modulus}\ne = \
-{public_exponent}")
+{public_exponent}\nd = {private_exponent}\n\nPress any key to continue")
+
+        get_char()
 
 
     clear_console()
@@ -345,6 +370,42 @@ d (private exponent)\np = {prime_1}\nq = {prime_2}\nn = {modulus}\ne = \
     print("This is your encrypt massage\n")
     print(str(encrypt_list).removeprefix("[").removesuffix("]") + "\n")
     print("Press any key to return to menu")
+
+    get_char()
+
+
+def decrypting_a_massage_flow():
+    clear_console()
+    print("""What is your encrypt massage
+Example: 1436, 765482, 81523, 194638""")
+    
+    encrypt_massage = \
+        [int(encrypt_char) for encrypt_char in input().split(", ")]
+
+    clear_console()
+
+    print("What is your private key? (in positive integer)")
+    print("d (private exponent) = ", end = "")
+
+    private_exponent = int(input())
+
+    print("n (modulus) = ", end = "")
+
+    modulus = int(input())
+
+    clear_console()
+
+    decrypt_massage = []
+
+    for encrypt_char in encrypt_massage:
+        decrypt_massage.append(RSA_decryption(encrypt_char, private_exponent, modulus))
+    
+    print("Your decrypt massage is")
+
+    for char in decrypt_massage:
+        print(chr(char), end = "")
+    
+    print("\nPress any key to continue")
 
     get_char()
 
@@ -378,7 +439,7 @@ press the following keys to select an option:
         encrypting_a_massage_flow()
 
     elif choice == "4":
-        pass
+        decrypting_a_massage_flow()
 
     else:
         break

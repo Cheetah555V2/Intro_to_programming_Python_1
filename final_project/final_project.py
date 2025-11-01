@@ -298,7 +298,13 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
 
     else:
         print(f"Generated primes keys:\np = {prime_1}\nq = {prime_2}")
-    print(f"Your semiprime (n) is {prime_1*prime_2}")
+    modulus = prime_1*prime_2
+    public_exponent = public_exponent_generator(
+        semiprime_euler_totient(prime_1, prime_2), modulus)
+    private_exponent = private_exponent_finder(public_exponent, prime_1, prime_2)
+
+    print(f"Your semiprime (n) is {modulus}\nYour public exponent (e) is \
+{public_exponent}\nYour private exponent (d) is {private_exponent}")
 
     print("Press any key to return to main menu.")
     get_char()
@@ -384,7 +390,8 @@ Example: 1436, 765482, 81523, 194638""")
 
     clear_console()
 
-    print("What is your private key? (in positive integer)")
+    print("What is your private key? (in positive integer) (n should not be le\
+ss than 1,200,000 or there might problems with decryption)")
     print("d (private exponent) = ", end = "")
 
     private_exponent = int(input())

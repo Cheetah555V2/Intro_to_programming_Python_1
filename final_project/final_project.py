@@ -45,30 +45,49 @@ def trial_division_primitive_test(number):
 
 
 def miller_rabin_primitive_test(number, accuracy_level=10):
+    """
+    Miller Robin primitive test is prob test for prime
+    1. Find s > 0 and odd d > 0 such that number - 1 = 2^s * d
+    2. Repeat accuracy_level times:
+        2.1 witness <- random(2, n-2)
+        2.2 x <- witness^d mod n
+        2.3 Repeat s times:
+            2.3.1 y <- x^2 mod n
+            2.3.2 if y = 1 and x != 1 and x != n-1:
+                2.3.2.1 return "composite"
+            2.3.3 x <- y
+        2.4 if y != 1:
+            2.4.1 return "composite"
+    3. return "probably prime"
+    """
+
+    # edge cases
+
     if number == 2:
         return True
 
     if number <= 1 or number % 2 == 0:
         return False
     
-    s = 0
-    d = number - 1
-    while d % 2 == 0:
-        d //= 2
-        s += 1
+    # find s > 0 and odd number d > 0 such that number-1 = 2^s * d
+
+    power_of_two_factor = 0             # s
+    odd_factor = number - 1             # d
+    while odd_factor % 2 == 0:
+        odd_factor //= 2
+        power_of_two_factor += 1
     
 
     for _ in range(accuracy_level):
-        a = random.randint(2, number - 2)
-        x = pow(a, d, number)
+        witness = random.randint(2, number - 2)
+        x = pow(witness, odd_factor, number)
         if x == 1 or x == number - 1:
             continue
 
-        for _ in range(s):
+        for _ in range(power_of_two_factor):
             y = (x * x) % number
             if (y == 1) and x != 1 and x != number - 1:
                 return False
-            x = y
 
         if y != 1:
             return False

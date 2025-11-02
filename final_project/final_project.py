@@ -1,5 +1,4 @@
 import math
-import msvcrt
 import os
 import time
 import random
@@ -11,16 +10,42 @@ import random
 |==============================================
 """
 
+if os.name == "nt":
+    import msvcrt
 
-def clear_console():
-    if os.name == "nt":
+    def clear_console():
         os.system("cls")
-    else:
+
+
+    def get_char():
+        return chr(msvcrt.getch()[0])
+
+else:
+    import tty
+    import termios
+    import sys
+
+    def clear_console():
         os.system("clear")
+    
+    def get_char():
+        # Gets the file descriptor (an integer handle) for standard input
+        file_descriptor = sys.stdin.fileno()
 
+        # Saves the current terminal settings
+        old_settings = termios.tcgetattr(file_descriptor)
 
-def get_char():
-    return chr(msvcrt.getch()[0])
+        # Puts the terminal in raw mode (No echo)
+        tty.setraw(file_descriptor)
+
+        # Reads 1 character from the terminal
+        charactor = sys.stdin.read(1)
+
+        # Restores the original terminal settings
+        termios.tcsetattr(file_descriptor, termios.TCSADRAIN, old_settings)
+
+        # return charactor
+        return charactor
 
 
 """
@@ -33,7 +58,7 @@ def trial_division_primitive_test(number):
     if number <= 1:
         return False
 
-    for index in range(2, int(math.sqrt(number))):
+    for index in range(2, int(math.sqrt(number)) + 1):
         # math.sqrt() is faster then x ** (1/2), I read the c and assembly code
         # it's like 20 times faster and more accurate
         # math.sqrt() is just 1 instruction in x86 (modern CPU with SSE2)
@@ -63,7 +88,7 @@ def miller_rabin_primitive_test(number, accuracy_level=10):
 
     # edge cases
 
-    if number == 2:
+    if number == 2 or number == 3:
         return True
 
     if number <= 1 or number % 2 == 0:
@@ -88,6 +113,7 @@ def miller_rabin_primitive_test(number, accuracy_level=10):
             y = (x * x) % number
             if (y == 1) and x != 1 and x != number - 1:
                 return False
+            x = y
 
         if y != 1:
             return False
@@ -120,6 +146,9 @@ def semiprime_euler_totient(prime_1, prime_2):
 def modular_multiplicative_inverse(multiplyer, modulus_base):
     # multiplyer*number ≡ 1 (mod modulus_base)
     # return multiplyer^(-1)
+
+    if math.gcd(multiplyer, modulus_base) != 1:
+        return False
 
     # Use Extended Euclidean algorithm
 
@@ -180,6 +209,8 @@ def public_exponent_generator(euler_totient, modulus):
 def private_exponent_finder(exponent, prime_1, prime_2):
     totient = semiprime_euler_totient(prime_1,prime_2)
     private_exponent = modular_multiplicative_inverse(exponent, totient)
+    if isinstance(bool, private_exponent):
+        return False
     return private_exponent
 
 
@@ -245,13 +276,13 @@ ight take up a lot of time (use trial division up to √number) (Y/N):""")
                     if result:
                         print(f"The number {number} is Prime")
                     else:
-                        print(f"The number {number} is Coprime")
+                        print(f"The number {number} is Composite")
     
                     print(f"The program took {elapsed_time:.6f} to complete.")
 
 
             else:
-                print(f"The number {number} is Coprime")
+                print(f"The number {number} is Composite")
                 print(f"The program took {elapsed_time:.6f} to complete.")
 
         
@@ -268,7 +299,7 @@ ight take up a lot of time (use trial division up to √number) (Y/N):""")
             if result:
                 print(f"The number {number} is Prime")
             else:
-                print(f"The number {number} is Coprime")
+                print(f"The number {number} is Composite")
 
             print(f"The program took {elapsed_time:.6f} to complete.")
             
@@ -321,6 +352,13 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
     public_exponent = public_exponent_generator(
         semiprime_euler_totient(prime_1, prime_2), modulus)
     private_exponent = private_exponent_finder(public_exponent, prime_1, prime_2)
+
+    if isinstance(private_exponent, bool):
+        print("Cannot find keys, this might due to n not being semiprime \
+number\nPress any key to go back to menu")
+        get_char()
+        return 0
+
 
     print(f"Your semiprime (n) is {modulus}\nYour public exponent (e) is \
 {public_exponent}\nYour private exponent (d) is {private_exponent}")

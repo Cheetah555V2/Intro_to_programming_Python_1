@@ -135,7 +135,7 @@ def is_prime(number, accuracy_level=10):
 """    
 
 def RSA_encryption(unicode, public_exponent, modulus):
-    return pow(unicode,public_exponent,modulus)
+    return pow(unicode, public_exponent, modulus)
 
 def RSA_decryption(encrypt_code, private_exponent, modulus):
     return pow(encrypt_code, private_exponent, modulus)

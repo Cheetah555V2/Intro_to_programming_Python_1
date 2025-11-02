@@ -44,7 +44,7 @@ def trial_division_primitive_test(number):
     return True
 
 
-def miller_rabin_primitive_test(number, k=10):
+def miller_rabin_primitive_test(number, accuracy_level=10):
     if number == 2:
         return True
 
@@ -58,7 +58,7 @@ def miller_rabin_primitive_test(number, k=10):
         s += 1
     
 
-    for _ in range(k):
+    for _ in range(accuracy_level):
         a = random.randint(2, number - 2)
         x = pow(a, d, number)
         if x == 1 or x == number - 1:

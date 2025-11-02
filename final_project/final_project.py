@@ -391,8 +391,11 @@ ause decryption problem and error)")
         public_exponent = int(input("e (public exponent) = "))
         modulus = int(input("n (modulus) = "))
 
-        if public_exponent >= modulus:
+        if public_exponent >= math.sqrt(modulus):
+            clear_console()
             print("Your input is wrong\nPress any key to go back to menu")
+            get_char()
+            return 0
 
     else:
         print("How many digits of prime (p and q) that you will use for en\

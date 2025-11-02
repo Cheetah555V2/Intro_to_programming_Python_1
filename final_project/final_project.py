@@ -194,14 +194,14 @@ def wait_for_right_input_receiver(*wanted_input):
     return choice
 
 
-def public_exponent_generator(euler_totient, modulus):
-    if modulus > 65537:
+def public_exponent_generator(euler_totient):
+    if euler_totient > 65537:
         public_exponent = 65537
     else:
-        public_exponent = random.randint(2, modulus-1)
+        public_exponent = random.randint(2, euler_totient-1)
 
     while math.gcd(public_exponent, euler_totient) != 1:
-        public_exponent = random.randint(2, modulus-1)
+        public_exponent = random.randint(2, euler_totient-1)
 
     return public_exponent
 
@@ -350,7 +350,7 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
         print(f"Generated primes keys:\np = {prime_1}\nq = {prime_2}")
     modulus = prime_1*prime_2
     public_exponent = public_exponent_generator(
-        semiprime_euler_totient(prime_1, prime_2), modulus)
+        semiprime_euler_totient(prime_1, prime_2))
     private_exponent = private_exponent_finder(public_exponent, prime_1, prime_2)
 
     if isinstance(private_exponent, bool):
@@ -409,8 +409,7 @@ ion): ",end="")
 
         euler_totient_n = semiprime_euler_totient(prime_1,prime_2)
 
-        public_exponent = public_exponent_generator(euler_totient_n,
-                                                    modulus)
+        public_exponent = public_exponent_generator(euler_totient_n)
         
         private_exponent = private_exponent_finder(public_exponent, prime_1, prime_2)
 

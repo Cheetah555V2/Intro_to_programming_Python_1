@@ -150,11 +150,11 @@ def modular_multiplicative_inverse(multiplyer, modulus_base):
 """    
 
 def generating_prime(digits):
-    prime = random.randint(10**(digits-1),10**(digits)-1)
-    while not is_prime(prime):
-        prime = random.randint(10**(digits-1),10**(digits)-1)
+    number = random.randint(10**(digits-1),10**(digits)-1)
+    while not is_prime(number):
+        number = random.randint(10**(digits-1),10**(digits)-1)
     
-    return prime
+    return number
 
 
 def wait_for_right_input_receiver(*wanted_input):

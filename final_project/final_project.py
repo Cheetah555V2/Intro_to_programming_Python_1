@@ -39,13 +39,13 @@ else:
         tty.setraw(file_descriptor)
 
         # Reads 1 character from the terminal
-        charactor = sys.stdin.read(1)
+        character = sys.stdin.read(1)
 
         # Restores the original terminal settings
         termios.tcsetattr(file_descriptor, termios.TCSADRAIN, old_settings)
 
-        # return charactor
-        return charactor
+        # return character
+        return character
 
 
 """
@@ -209,7 +209,7 @@ def public_exponent_generator(euler_totient, modulus):
 def private_exponent_finder(exponent, prime_1, prime_2):
     totient = semiprime_euler_totient(prime_1,prime_2)
     private_exponent = modular_multiplicative_inverse(exponent, totient)
-    if isinstance(bool, private_exponent):
+    if isinstance(private_exponent, bool):
         return False
     return private_exponent
 
@@ -355,7 +355,7 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
 
     if isinstance(private_exponent, bool):
         print("Cannot find keys, this might due to n not being semiprime \
-number\nPress any key to go back to menu")
+number\nPlease try again\nPress any key to go back to menu")
         get_char()
         return 0
 
@@ -391,6 +391,9 @@ ause decryption problem and error)")
         public_exponent = int(input("e (public exponent) = "))
         modulus = int(input("n (modulus) = "))
 
+        if public_exponent >= modulus:
+            print("Your input is wrong\nPress any key to go back to menu")
+
     else:
         print("How many digits of prime (p and q) that you will use for en\
 cryption? (please use more than 4 digits, or it might cause error when decrypt\
@@ -402,8 +405,6 @@ ion): ",end="")
         modulus = prime_1 * prime_2
 
         euler_totient_n = semiprime_euler_totient(prime_1,prime_2)
-
-
 
         public_exponent = public_exponent_generator(euler_totient_n,
                                                     modulus)
@@ -440,6 +441,9 @@ d (private exponent)\np = {prime_1}\nq = {prime_2}\nn = {modulus}\ne = \
 def decrypting_a_massage_flow():
     clear_console()
     print("""What is your encrypt massage
+Please write it in form of
+encrypt character 1, encrypt character 2, encrypt character 3, ...
+Your encrypt character MUST be positive integer
 Example: 1436, 765482, 81523, 194638""")
     
     encrypt_massage = \
@@ -449,20 +453,26 @@ Example: 1436, 765482, 81523, 194638""")
 
     print("What is your private key? (in positive integer) (n should not be le\
 ss than 1,200,000 or there might problems with decryption)")
-    print("d (private exponent) = ", end = "")
 
-    private_exponent = int(input())
+    private_exponent = int(input("d (private exponent) = "))
 
-    print("n (modulus) = ", end = "")
-
-    modulus = int(input())
+    modulus = int(input("n (modulus) = "))
 
     clear_console()
 
     decrypt_massage = []
 
     for encrypt_char in encrypt_massage:
-        decrypt_massage.append(RSA_decryption(encrypt_char, private_exponent, modulus))
+        decrypt_char = RSA_decryption(encrypt_char, private_exponent, modulus)
+        decrypt_massage.append(RSA_decryption(encrypt_char,
+                                              private_exponent, modulus))
+        
+        #If decrypt_char cannot be convert to character
+        if decrypt_char not in range(0x110000):
+            print("You have input the wrong key\nPress any key to go back to m\
+enu")
+            get_char()
+            return 0
     
     print("Your decrypt massage is")
 

@@ -162,7 +162,8 @@ def modular_multiplicative_inverse(multiplyer, modulus_base):
         quotient = remainder_curr // remainder_next
 
         bezout_coefficients_curr, bezout_coefficients_next = \
-            bezout_coefficients_next, bezout_coefficients_curr - (quotient * bezout_coefficients_next)
+            bezout_coefficients_next, bezout_coefficients_curr - \
+                (quotient * bezout_coefficients_next)
         
         remainder_curr, remainder_next = \
             remainder_next, remainder_curr - (quotient * remainder_next)
@@ -351,7 +352,8 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
     modulus = prime_1*prime_2
     public_exponent = public_exponent_generator(
         semiprime_euler_totient(prime_1, prime_2))
-    private_exponent = private_exponent_finder(public_exponent, prime_1, prime_2)
+    private_exponent = private_exponent_finder(public_exponent, prime_1,
+                                               prime_2)
 
     if isinstance(private_exponent, bool):
         print("Cannot find keys, this might due to n not being semiprime \
@@ -411,7 +413,8 @@ ion): ",end="")
 
         public_exponent = public_exponent_generator(euler_totient_n)
         
-        private_exponent = private_exponent_finder(public_exponent, prime_1, prime_2)
+        private_exponent = private_exponent_finder(public_exponent, prime_1,
+                                                   prime_2)
 
         print(f"This is your prime p, q, n (modulus), e (public exponent) and \
 d (private exponent)\np = {prime_1}\nq = {prime_2}\nn = {modulus}\ne = \

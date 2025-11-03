@@ -16,7 +16,6 @@ if os.name == "nt":
     def clear_console():
         os.system("cls")
 
-
     def get_char():
         return chr(msvcrt.getch()[0])
 
@@ -27,7 +26,7 @@ else:
 
     def clear_console():
         os.system("clear")
-    
+
     def get_char():
         # Gets the file descriptor (an integer handle) for standard input
         file_descriptor = sys.stdin.fileno()
@@ -53,6 +52,7 @@ else:
 |                Primitive test
 |==============================================
 """
+
 
 def trial_division_primitive_test(number):
     if number <= 1:
@@ -93,7 +93,7 @@ def miller_rabin_primitive_test(number, accuracy_level=10):
 
     if number <= 1 or number % 2 == 0:
         return False
-    
+
     # find s > 0 and odd number d > 0 such that number-1 = 2^s * d
 
     power_of_two_factor = 0             # s
@@ -101,7 +101,6 @@ def miller_rabin_primitive_test(number, accuracy_level=10):
     while odd_factor % 2 == 0:
         odd_factor //= 2
         power_of_two_factor += 1
-    
 
     for _ in range(accuracy_level):
         witness = random.randint(2, number - 2)
@@ -117,7 +116,7 @@ def miller_rabin_primitive_test(number, accuracy_level=10):
 
         if y != 1:
             return False
-    
+
     return True
 
 
@@ -132,16 +131,20 @@ def is_prime(number, accuracy_level=10):
 |==============================================
 |                 Math function
 |==============================================
-"""    
+"""
+
 
 def RSA_encryption(unicode, public_exponent, modulus):
     return pow(unicode, public_exponent, modulus)
 
+
 def RSA_decryption(encrypt_code, private_exponent, modulus):
     return pow(encrypt_code, private_exponent, modulus)
 
+
 def semiprime_euler_totient(prime_1, prime_2):
     return (prime_1-1) * (prime_2-1)
+
 
 def modular_multiplicative_inverse(multiplyer, modulus_base):
     # multiplyer*number ≡ 1 (mod modulus_base)
@@ -163,27 +166,29 @@ def modular_multiplicative_inverse(multiplyer, modulus_base):
 
         bezout_coefficients_curr, bezout_coefficients_next = \
             bezout_coefficients_next, bezout_coefficients_curr - \
-                (quotient * bezout_coefficients_next)
-        
+            (quotient * bezout_coefficients_next)
+
         remainder_curr, remainder_next = \
             remainder_next, remainder_curr - (quotient * remainder_next)
-    
+
     if bezout_coefficients_curr < 0:
         bezout_coefficients_curr += modulus_base
 
     return bezout_coefficients_curr
 
+
 """
 |==============================================
 |             Sub-Sub-Main function
 |==============================================
-"""    
+"""
+
 
 def generating_prime(digits):
-    number = random.randint(10**(digits-1),10**(digits)-1)
+    number = random.randint(10**(digits-1), 10**(digits)-1)
     while not is_prime(number):
-        number = random.randint(10**(digits-1),10**(digits)-1)
-    
+        number = random.randint(10**(digits-1), 10**(digits)-1)
+
     return number
 
 
@@ -191,7 +196,7 @@ def wait_for_right_input_receiver(*wanted_input):
     choice = get_char().lower()
     while choice not in wanted_input:
         choice = get_char().lower()
-    
+
     return choice
 
 
@@ -208,7 +213,7 @@ def public_exponent_generator(euler_totient):
 
 
 def private_exponent_finder(exponent, prime_1, prime_2):
-    totient = semiprime_euler_totient(prime_1,prime_2)
+    totient = semiprime_euler_totient(prime_1, prime_2)
     private_exponent = modular_multiplicative_inverse(exponent, totient)
     if isinstance(private_exponent, bool):
         return False
@@ -221,6 +226,7 @@ def private_exponent_finder(exponent, prime_1, prime_2):
 |==============================================
 """
 
+
 def check_for_primality_flow():
     while True:
 
@@ -228,7 +234,7 @@ def check_for_primality_flow():
         print("Primality Test\nEnter an integer to test for primality: ")
 
         number = int(input())
-        
+
         clear_console()
 
         if number > 10**12:
@@ -241,15 +247,15 @@ lut = 10): """)
                 accuracy_level = int(accuracy_level)
             else:
                 accuracy_level = 10
-            
+
             print("Processing... please wait.")
 
             start_time = time.time()
             result = is_prime(number, accuracy_level)
             end_time = time.time()
             elapsed_time = end_time - start_time
-            accuracy = max(0, (1 - (1 / (4**accuracy_level))) * 100) #in %
-            
+            accuracy = max(0, (1 - (1 / (4**accuracy_level))) * 100)  # in %
+
             clear_console()
 
             if result:
@@ -258,9 +264,9 @@ lut = 10): """)
                 print(f"The program took {elapsed_time:.6f} to complete.")
                 print("""Do you want to check if it's definitely prime? This m\
 ight take up a lot of time (use trial division up to √number) (Y/N):""")
-                
+
                 choice = wait_for_right_input_receiver("y", "n")
-                
+
                 clear_console()
 
                 if choice == "y":
@@ -278,15 +284,13 @@ ight take up a lot of time (use trial division up to √number) (Y/N):""")
                         print(f"The number {number} is Prime")
                     else:
                         print(f"The number {number} is Composite")
-    
-                    print(f"The program took {elapsed_time:.6f} to complete.")
 
+                    print(f"The program took {elapsed_time:.6f} to complete.")
 
             else:
                 print(f"The number {number} is Composite")
                 print(f"The program took {elapsed_time:.6f} to complete.")
 
-        
         else:
             # Use trial division for small numbers
             print("Processing... please wait.")
@@ -303,13 +307,12 @@ ight take up a lot of time (use trial division up to √number) (Y/N):""")
                 print(f"The number {number} is Composite")
 
             print(f"The program took {elapsed_time:.6f} to complete.")
-            
 
         print("(R) to do primality test again")
         print("(M) to return to main menu.")
 
         choice = wait_for_right_input_receiver("r", "m")
-        
+
         if choice == "r":
             continue
         elif choice == "m":
@@ -331,18 +334,18 @@ ns more secure keys, but slower generation) (do not input value more than 1000\
 
     prime_1 = generating_prime(digits)
     prime_2 = generating_prime(digits)
-    
+
     clear_console()
 
     if digits >= 12:
-        confidence = (1 - (pow(1/4, 20) * (2 - pow(1/4, 20)))) * 100 # in %
+        confidence = (1 - (pow(1/4, 20) * (2 - pow(1/4, 20)))) * 100  # in %
 
         # To P'Ve or P'Dew reading my code
         # I double check the confidence level
         # No need to check again. It's just P(not prime) = (1/4)**k
         # And P(at least 1 out of 2 is not prime) is just
         # P(not prime) + P(not prime) - (P(not prime))**2
-        # which is what I write above before turn it into percentage 
+        # which is what I write above before turn it into percentage
 
         print(f"Generated primes keys with {confidence}% confidence that b\
 oth is prime:\np = {prime_1}\nq = {prime_2}")
@@ -360,7 +363,6 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
 number\nPlease try again\nPress any key to go back to menu")
         get_char()
         return 0
-
 
     print(f"Your modulus (n) is {modulus}\nYour public exponent (e) is \
 {public_exponent}\nYour private exponent (d) is {private_exponent}")
@@ -382,9 +384,9 @@ def encrypting_a_massage_flow():
 ) = (p-1)*(q-1)\ne (public exponent) is a number we choose such that e is copr\
 ime with ϕ(n)\n\nPlease use n greater than 1,200,000 (if it's lower it might c\
 ause decryption problem and error)")
-    
+
     choice = wait_for_right_input_receiver("y", "n")
-    
+
     clear_console()
 
     if choice == "y":
@@ -402,17 +404,17 @@ ause decryption problem and error)")
     else:
         print("How many digits of prime (p and q) that you will use for en\
 cryption? (please use more than 4 digits, or it might cause error when decrypt\
-ion): ",end="")
+ion): ", end="")
         digits = int(input())
 
         prime_1 = generating_prime(digits)
         prime_2 = generating_prime(digits)
         modulus = prime_1 * prime_2
 
-        euler_totient_n = semiprime_euler_totient(prime_1,prime_2)
+        euler_totient_n = semiprime_euler_totient(prime_1, prime_2)
 
         public_exponent = public_exponent_generator(euler_totient_n)
-        
+
         private_exponent = private_exponent_finder(public_exponent, prime_1,
                                                    prime_2)
 
@@ -422,18 +424,17 @@ ion): ",end="")
 
         get_char()
 
-
     clear_console()
     print("Encrypting... please wait")
-    
+
     encrypt_list = []
 
     for charactor in massage:
         unicode = ord(charactor)
         encrypt_charactor = RSA_encryption(unicode, public_exponent,
-                                            modulus)
+                                           modulus)
         encrypt_list.append(encrypt_charactor)
-    
+
     clear_console()
 
     print("This is your encrypt massage\n")
@@ -450,7 +451,7 @@ Please write it in form of
 encrypt character 1, encrypt character 2, encrypt character 3, ...
 Your encrypt character MUST be positive integer
 Example: 1436, 765482, 81523, 194638""")
-    
+
     encrypt_massage = \
         [int(encrypt_char) for encrypt_char in input().split(", ")]
 
@@ -471,19 +472,19 @@ ss than 1,200,000 or there might problems with decryption)")
         decrypt_char = RSA_decryption(encrypt_char, private_exponent, modulus)
         decrypt_massage.append(RSA_decryption(encrypt_char,
                                               private_exponent, modulus))
-        
-        #If decrypt_char cannot be convert to character
+
+        # If decrypt_char cannot be convert to character
         if decrypt_char not in range(0x110000):
             print("You have input the wrong key\nPress any key to go back to m\
 enu")
             get_char()
             return 0
-    
+
     print("Your decrypt massage is")
 
     for char in decrypt_massage:
-        print(chr(char), end = "")
-    
+        print(chr(char), end="")
+
     print("\nPress any key to continue")
 
     get_char()
@@ -505,15 +506,15 @@ press the following keys to select an option:
 (3) Encrypting a message
 (4) Decrypting a message
 (Q) Quit program""")
-    
+
     choice = wait_for_right_input_receiver("1", "2", "3", "4", "q")
-    
+
     if choice == "1":
         check_for_primality_flow()
 
     elif choice == "2":
         generating_a_pair_of_RSA_keys_flow()
-    
+
     elif choice == "3":
         encrypting_a_massage_flow()
 

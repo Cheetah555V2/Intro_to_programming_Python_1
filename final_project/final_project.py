@@ -362,7 +362,7 @@ number\nPlease try again\nPress any key to go back to menu")
         return 0
 
 
-    print(f"Your semiprime (n) is {modulus}\nYour public exponent (e) is \
+    print(f"Your modulus (n) is {modulus}\nYour public exponent (e) is \
 {public_exponent}\nYour private exponent (d) is {private_exponent}")
 
     print("Press any key to return to main menu.")

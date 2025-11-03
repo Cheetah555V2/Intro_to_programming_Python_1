@@ -416,8 +416,8 @@ ion): ",end="")
         private_exponent = private_exponent_finder(public_exponent, prime_1,
                                                    prime_2)
 
-        print(f"This is your prime p, q, n (modulus), e (public exponent) and \
-d (private exponent)\np = {prime_1}\nq = {prime_2}\nn = {modulus}\ne = \
+        print(f"This is your prime p, prime q, n (modulus), e (public exponent\
+) and d (private exponent)\np = {prime_1}\nq = {prime_2}\nn = {modulus}\ne = \
 {public_exponent}\nd = {private_exponent}\n\nPress any key to continue")
 
         get_char()

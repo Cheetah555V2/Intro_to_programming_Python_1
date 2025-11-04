@@ -125,7 +125,7 @@ def miller_rabin_primitive_test(number, iterations=10):
             # x^2 mod n
             next_sequnce = (curr_sequnce * curr_sequnce) % number
             
-            # Check if x^2 ≡ 1 or x^2 ≡ n-1?
+            # Check if x^2 = 1 or x^2 = n-1?
             if (next_sequnce == 1) and (curr_sequnce != 1) and \
                 (curr_sequnce != number - 1):
                 return False

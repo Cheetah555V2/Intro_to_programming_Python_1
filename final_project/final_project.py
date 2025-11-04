@@ -69,19 +69,26 @@ def trial_division_primitive_test(number):
     return True
 
 
-def miller_rabin_primitive_test(number, accuracy_level=10):
+def miller_rabin_primitive_test(number, iterations=10):
+    
+    """
+    witness^2 ≡ 1 (mod p) if p is prime satisfy 2 conditions
+    1. Sequence ends with 1 (Fermar's test)
+    2. Sequence before 1 must be 1 or n - 1
+    """
+    
     """
     Miller Robin primitive test is prob test for prime
     1. Find s > 0 and odd d > 0 such that number - 1 = 2^s * d
-    2. Repeat accuracy_level times:
+    2. Repeat iterations times:
         2.1 witness <- random(2, n-2)
-        2.2 x <- witness^d mod n
+        2.2 curr_sequence <- witness^d mod n
         2.3 Repeat s times:
-            2.3.1 y <- x^2 mod n
+            2.3.1 next_sequence <- curr_sequence^2 mod n
             2.3.2 if y = 1 and x != 1 and x != n-1:
                 2.3.2.1 return "composite"
-            2.3.3 x <- y
-        2.4 if y != 1:
+            2.3.3 curr_sequence <- next_sequence
+        2.4 if next_sequence != 1:
             2.4.1 return "composite"
     3. return "probably prime"
     """
@@ -102,19 +109,29 @@ def miller_rabin_primitive_test(number, accuracy_level=10):
         odd_factor //= 2
         power_of_two_factor += 1
 
-    for _ in range(accuracy_level):
+    for _ in range(iterations):
         witness = random.randint(2, number - 2)
-        x = pow(witness, odd_factor, number)
-        if x == 1 or x == number - 1:
+
+        # x^d mod n
+        curr_sequnce = pow(witness, odd_factor, number)
+
+        if curr_sequnce == 1 or curr_sequnce == number - 1:
             continue
+            # If p is prime then x^2 ≡ 1 mod(p) then x ≡ 1 or x ≡ p - 1
+            # So no need to check since sequnce the come after this will
+            # also be 1 or p - 1
 
         for _ in range(power_of_two_factor):
-            y = (x * x) % number
-            if (y == 1) and x != 1 and x != number - 1:
+            # x^2 mod n
+            next_sequnce = (curr_sequnce * curr_sequnce) % number
+            
+            # Check if x^2 ≡ 1 or x^2 ≡ n-1?
+            if (next_sequnce == 1) and (curr_sequnce != 1) and \
+                (curr_sequnce != number - 1):
                 return False
-            x = y
+            curr_sequnce = next_sequnce
 
-        if y != 1:
+        if next_sequnce != 1:
             return False
 
     return True

@@ -482,8 +482,8 @@ enu")
 
     print("Your decrypt massage is")
 
-    for char in decrypt_massage:
-        print(chr(char), end="")
+    for character in decrypt_massage:
+        print(chr(character), end="")
 
     print("\nPress any key to continue")
 

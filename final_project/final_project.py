@@ -122,13 +122,15 @@ def miller_rabin_primitive_test(number, iterations=10):
             # also be 1 or p - 1
 
         for _ in range(power_of_two_factor):
-            # x^2 mod n
+            # next sequence = x^2 mod n
             next_sequnce = (curr_sequnce * curr_sequnce) % number
             
-            # Check if x^2 = 1 or x^2 = n-1?
+            # Check if x = 1 or x = n-1 iff next sequence is x^2 = 1?
             if (next_sequnce == 1) and (curr_sequnce != 1) and \
                 (curr_sequnce != number - 1):
                 return False
+            
+            # x = next sequence
             curr_sequnce = next_sequnce
 
         if next_sequnce != 1:

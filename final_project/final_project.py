@@ -13,11 +13,11 @@ import random
 if os.name == "nt":
     import msvcrt
 
-    def clear_console():
+    def clear_console() -> None:
         # Use clear console command
         os.system("cls")
 
-    def get_char():
+    def get_char() -> str:
         # Output 1 character then user type without echo and waiting for enter
         return chr(msvcrt.getch()[0])
 
@@ -26,10 +26,10 @@ else:
     import termios
     import sys
 
-    def clear_console():
+    def clear_console() -> None:
         os.system("clear")
 
-    def get_char():
+    def get_char() -> str:
         # Gets the file descriptor (an integer handle) for standard input
         file_descriptor = sys.stdin.fileno()
 
@@ -56,7 +56,7 @@ else:
 """
 
 
-def trial_division_primitive_test(number):
+def trial_division_primitive_test(number : int) -> bool:
     """
     number : int
     Try to divided a number up to sqrt(number) + 1
@@ -80,7 +80,7 @@ def trial_division_primitive_test(number):
     return True
 
 
-def miller_rabin_primitive_test(number, iterations=10):
+def miller_rabin_primitive_test(number : int, iterations : int = 10) -> bool:
     """
     number     : int
     iterations : int
@@ -154,7 +154,7 @@ def miller_rabin_primitive_test(number, iterations=10):
     return True
 
 
-def is_prime(number, accuracy_level=10):
+def is_prime(number : int, accuracy_level : int = 10) -> bool:
     """
     number         : int
     accuracy_level : int
@@ -182,7 +182,9 @@ def is_prime(number, accuracy_level=10):
 """
 
 
-def RSA_encryption(unicode, public_exponent, modulus):
+def RSA_encryption(unicode : int,
+                   public_exponent : int,
+                   modulus : int) -> int:
     """
     unicode         : int
     public_exponent : int
@@ -206,7 +208,7 @@ def RSA_decryption(encrypt_code, private_exponent, modulus):
     return pow(encrypt_code, private_exponent, modulus)
 
 
-def semiprime_euler_totient(prime_1, prime_2):
+def semiprime_euler_totient(prime_1 : int, prime_2 : int) -> int:
     """
     prime_1 : int (prime number)
     prime_2 : int (prime number)
@@ -229,7 +231,8 @@ def semiprime_euler_totient(prime_1, prime_2):
     return (prime_1-1) * (prime_2-1)
 
 
-def modular_multiplicative_inverse(multiplyer, modulus_base):
+def modular_multiplicative_inverse(multiplyer : int,
+                                   modulus_base : int) -> int:
     """
     multiplyer   : int
     modulus_base : int
@@ -244,7 +247,7 @@ def modular_multiplicative_inverse(multiplyer, modulus_base):
     """
 
     if math.gcd(multiplyer, modulus_base) != 1:
-        return False
+        return 0 # 0 for false since number*0 !≡ 1 (mod anything)
 
     # Use Extended Euclidean algorithm
 
@@ -277,7 +280,7 @@ def modular_multiplicative_inverse(multiplyer, modulus_base):
 """
 
 
-def generating_prime(digits):
+def generating_prime(digits : int) -> int:
     """
     digits : int
 
@@ -290,7 +293,7 @@ def generating_prime(digits):
     return number
 
 
-def wait_for_right_input_receiver(*wanted_input):
+def wait_for_right_input_receiver(*wanted_input : str) -> str:
     """
     *wanted_input : character (1 character string)
 
@@ -304,7 +307,7 @@ def wait_for_right_input_receiver(*wanted_input):
     return choice
 
 
-def public_exponent_generator(euler_totient):
+def public_exponent_generator(euler_totient : int) -> int:
     """
     euler_totient : int
 
@@ -322,7 +325,9 @@ def public_exponent_generator(euler_totient):
     return public_exponent
 
 
-def private_exponent_finder(exponent, prime_1, prime_2):
+def private_exponent_finder(exponent : int,
+                            prime_1 : int,
+                            prime_2 : int) -> int:
     """
     exponent : int
     prime_1  : int (prime number)
@@ -336,8 +341,8 @@ def private_exponent_finder(exponent, prime_1, prime_2):
         
     totient = semiprime_euler_totient(prime_1, prime_2)
     private_exponent = modular_multiplicative_inverse(exponent, totient)
-    if isinstance(private_exponent, bool):
-        return False
+    if private_exponent == 0:
+        return 0
     return private_exponent
 
 
@@ -348,7 +353,7 @@ def private_exponent_finder(exponent, prime_1, prime_2):
 """
 
 
-def check_for_primality_flow():
+def check_for_primality_flow() -> None:
     while True:
 
         clear_console()
@@ -440,7 +445,7 @@ ight take up a lot of time (use trial division up to √number) (Y/N):""")
             break
 
 
-def generating_a_pair_of_RSA_keys_flow():
+def generating_a_pair_of_RSA_keys_flow() -> None:
     clear_console()
 
     print("How many digits of primes do you want to generate? (more digits mea\
@@ -479,7 +484,7 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
     private_exponent = private_exponent_finder(public_exponent, prime_1,
                                                prime_2)
 
-    if isinstance(private_exponent, bool):
+    if private_exponent == 0:
         print("Cannot find keys, this might due to n not being semiprime \
 number\nPlease try again\nPress any key to go back to menu")
         get_char()
@@ -492,7 +497,7 @@ number\nPlease try again\nPress any key to go back to menu")
     get_char()
 
 
-def encrypting_a_massage_flow():
+def encrypting_a_massage_flow() -> None:
     clear_console()
 
     print("What is your massage that you want to encrypt?: ")
@@ -565,7 +570,7 @@ ion): ", end="")
     get_char()
 
 
-def decrypting_a_massage_flow():
+def decrypting_a_massage_flow() -> None:
     clear_console()
     print("""What is your encrypt massage
 Please write it in form of

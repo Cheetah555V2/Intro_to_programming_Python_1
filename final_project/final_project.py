@@ -14,9 +14,11 @@ if os.name == "nt":
     import msvcrt
 
     def clear_console():
+        # Use clear console command
         os.system("cls")
 
     def get_char():
+        # Output 1 character then user type without echo and waiting for enter
         return chr(msvcrt.getch()[0])
 
 else:
@@ -55,6 +57,15 @@ else:
 
 
 def trial_division_primitive_test(number):
+    """
+    number : int
+    Try to divided a number up to sqrt(number) + 1
+    if there exist an integer that can divided number
+        return False
+    else
+        return True 
+    """
+    
     if number <= 1:
         return False
 
@@ -70,7 +81,11 @@ def trial_division_primitive_test(number):
 
 
 def miller_rabin_primitive_test(number, iterations=10):
-    
+    """
+    number     : int
+    iterations : int
+    """
+
     """
     witness^(2^k) ≡ 1 (mod p) if p is prime satisfy 2 conditions
     1. Sequence (a_k) ends with 1 (Fermar's test)
@@ -140,6 +155,20 @@ def miller_rabin_primitive_test(number, iterations=10):
 
 
 def is_prime(number, accuracy_level=10):
+    """
+    number         : int
+    accuracy_level : int
+
+    If number > 10^12 
+        return result of Miller Rabin primitive test with
+        accuracy_level iterations
+        (return True or False)
+    else
+        return result of trial division primitive test
+        (return True or False)
+
+    """
+
     if number > 10**12:
         return miller_rabin_primitive_test(number, accuracy_level)
 
@@ -154,20 +183,65 @@ def is_prime(number, accuracy_level=10):
 
 
 def RSA_encryption(unicode, public_exponent, modulus):
+    """
+    unicode         : int
+    public_exponent : int
+    modulus         : int
+
+    it's just return unicode^public_exponent % modulus
+    """
+
     return pow(unicode, public_exponent, modulus)
 
 
 def RSA_decryption(encrypt_code, private_exponent, modulus):
+    """
+    encrypt_code     : int
+    private_exponent : int
+    modulus          : int
+
+    it's just return encrypt_code^private_exponent % modulus
+    """
+
     return pow(encrypt_code, private_exponent, modulus)
 
 
 def semiprime_euler_totient(prime_1, prime_2):
+    """
+    prime_1 : int (prime number)
+    prime_2 : int (prime number)
+
+    ϕ(n) is Euler's totient function which output the amount of coprime
+    relative to n
+
+    And ϕ(n) has a property which is if n = p_1^{k_1}p_2^{k_2}... (p is prime)
+    then ϕ(n) = ϕ(p_1^{k_1})ϕ(p_2^{k_2})...
+    and ϕ(p^k) = p^{k-1}(p-1)
+
+    then ϕ(n) = p_1^{k_1-1}(p_1-1)p_2^{k_2-1}(p_2-1)...
+
+    since our number is semi prime then
+    
+    ϕ(number) = (prime_1 - 1)(prime_2 - 1)
+
+    and then we return ϕ(number)
+    """
     return (prime_1-1) * (prime_2-1)
 
 
 def modular_multiplicative_inverse(multiplyer, modulus_base):
-    # multiplyer*number ≡ 1 (mod modulus_base)
-    # return multiplyer^(-1)
+    """
+    multiplyer   : int
+    modulus_base : int
+
+    return an inverse of modulur multiplicative inverse
+
+    multiplyer*x ≡ 1 (mod modulus_base)
+
+    Then x ≡ multiplyer^(-1) (mod modulus_base)
+    
+    this function find x and return it
+    """
 
     if math.gcd(multiplyer, modulus_base) != 1:
         return False
@@ -204,6 +278,11 @@ def modular_multiplicative_inverse(multiplyer, modulus_base):
 
 
 def generating_prime(digits):
+    """
+    digits : int
+
+    return a prime number with input numbers of digits
+    """
     number = random.randint(10**(digits-1), 10**(digits)-1)
     while not is_prime(number):
         number = random.randint(10**(digits-1), 10**(digits)-1)
@@ -212,6 +291,12 @@ def generating_prime(digits):
 
 
 def wait_for_right_input_receiver(*wanted_input):
+    """
+    *wanted_input : character (1 character string)
+
+    Will run until user type 1 of the wanted_input
+    then return the last character that user type
+    """
     choice = get_char().lower()
     while choice not in wanted_input:
         choice = get_char().lower()
@@ -220,6 +305,12 @@ def wait_for_right_input_receiver(*wanted_input):
 
 
 def public_exponent_generator(euler_totient):
+    """
+    euler_totient : int
+
+    find and e that gcd(e,euler_totient) = 1
+    return e
+    """
     if euler_totient > 65537:
         public_exponent = 65537
     else:
@@ -232,6 +323,17 @@ def public_exponent_generator(euler_totient):
 
 
 def private_exponent_finder(exponent, prime_1, prime_2):
+    """
+    exponent : int
+    prime_1  : int (prime number)
+    prime_2  : int (prime number)
+
+    let n = prime_1*prime_2
+    find d such that exponent*d ≡ 1 (mod ϕ(n))
+
+    return d
+    """
+        
     totient = semiprime_euler_totient(prime_1, prime_2)
     private_exponent = modular_multiplicative_inverse(exponent, totient)
     if isinstance(private_exponent, bool):

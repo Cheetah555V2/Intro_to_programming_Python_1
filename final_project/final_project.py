@@ -381,7 +381,7 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
         print("Cannot find keys, this might due to n not being semiprime \
 number\nPlease try again\nPress any key to go back to menu")
         get_char()
-        return 0
+        return None
 
     print(f"Your modulus (n) is {modulus}\nYour public exponent (e) is \
 {public_exponent}\nYour private exponent (d) is {private_exponent}")
@@ -414,11 +414,11 @@ ause decryption problem and error)")
         public_exponent = int(input("e (public exponent) = "))
         modulus = int(input("n (modulus) = "))
 
-        if public_exponent >= math.sqrt(modulus):
+        if public_exponent >= modulus:
             clear_console()
             print("Your input is wrong\nPress any key to go back to menu")
             get_char()
-            return 0
+            return None
 
     else:
         print("How many digits of prime (p and q) that you will use for en\
@@ -497,7 +497,7 @@ ss than 1,200,000 or there might problems with decryption)")
             print("You have input the wrong key\nPress any key to go back to m\
 enu")
             get_char()
-            return 0
+            return None
 
     print("Your decrypt massage is")
 

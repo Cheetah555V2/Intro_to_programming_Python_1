@@ -72,9 +72,9 @@ def trial_division_primitive_test(number):
 def miller_rabin_primitive_test(number, iterations=10):
     
     """
-    witness^2 ≡ 1 (mod p) if p is prime satisfy 2 conditions
-    1. Sequence ends with 1 (Fermar's test)
-    2. Sequence before 1 must be 1 or n - 1
+    witness^(2^k) ≡ 1 (mod p) if p is prime satisfy 2 conditions
+    1. Sequence (a_k) ends with 1 (Fermar's test)
+    2. Sequence (a_k) before 1 must be 1 or n - 1
     """
     
     """

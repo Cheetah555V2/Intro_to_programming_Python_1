@@ -196,7 +196,9 @@ def RSA_encryption(unicode : int,
     return pow(unicode, public_exponent, modulus)
 
 
-def RSA_decryption(encrypt_code, private_exponent, modulus):
+def RSA_decryption(encrypt_code : int,
+                   private_exponent : int,
+                   modulus : int) -> int:
     """
     encrypt_code     : int
     private_exponent : int

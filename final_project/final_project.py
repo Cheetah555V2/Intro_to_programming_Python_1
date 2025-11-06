@@ -417,7 +417,8 @@ ight take up a lot of time (use trial division up to √number) (Y/N):""")
 
             else:
                 print(f"The number {number} is Composite")
-                print(f"The program took {elapsed_time:.6f} to complete.")
+                print(f"The program took {elapsed_time:.6f} seconds to complet\
+e.")
 
         else:
             # Use trial division for small numbers
@@ -434,7 +435,7 @@ ight take up a lot of time (use trial division up to √number) (Y/N):""")
             else:
                 print(f"The number {number} is Composite")
 
-            print(f"The program took {elapsed_time:.6f} to complete.")
+            print(f"The program took {elapsed_time:.6f} seconds to complete.")
 
         print("(R) to do primality test again")
         print("(M) to return to main menu.")
@@ -483,7 +484,8 @@ oth is prime:\np = {prime_1}\nq = {prime_2}")
     modulus = prime_1*prime_2
     public_exponent = public_exponent_generator(
         semiprime_euler_totient(prime_1, prime_2))
-    private_exponent = private_exponent_finder(public_exponent, prime_1,
+    private_exponent = private_exponent_finder(public_exponent,
+                                               prime_1,
                                                prime_2)
 
     if private_exponent == 0:
@@ -531,8 +533,8 @@ ause decryption problem and error)")
 
     else:
         print("How many digits of prime (p and q) that you will use for en\
-cryption? (please use more than 4 digits, or it might cause error when decrypt\
-ion): ", end="")
+cryption? (please use more than 4, or it might cause error when decryption\
+): ", end="")
         digits = int(input())
 
         prime_1 = generating_prime(digits)
@@ -559,7 +561,8 @@ ion): ", end="")
 
     for charactor in massage:
         unicode = ord(charactor)
-        encrypt_charactor = RSA_encryption(unicode, public_exponent,
+        encrypt_charactor = RSA_encryption(unicode,
+                                           public_exponent,
                                            modulus)
         encrypt_list.append(encrypt_charactor)
 

@@ -56,7 +56,7 @@ else:
 """
 
 
-def trial_division_primitive_test(number : int) -> bool:
+def trial_division_primitive_test(number: int) -> bool:
     """
     number : int
     Try to divided a number up to sqrt(number) + 1
@@ -65,7 +65,7 @@ def trial_division_primitive_test(number : int) -> bool:
     else
         return True 
     """
-    
+
     if number <= 1:
         return False
 
@@ -80,7 +80,7 @@ def trial_division_primitive_test(number : int) -> bool:
     return True
 
 
-def miller_rabin_primitive_test(number : int, iterations : int = 10) -> bool:
+def miller_rabin_primitive_test(number: int, iterations: int = 10) -> bool:
     """
     number     : int
     iterations : int
@@ -91,7 +91,7 @@ def miller_rabin_primitive_test(number : int, iterations : int = 10) -> bool:
     1. Sequence (a_k) ends with 1 (Fermar's test)
     2. Sequence (a_k) before 1 must be 1 or n - 1
     """
-    
+
     """
     Miller Robin primitive test is prob test for prime
     1. Find s > 0 and odd d > 0 such that number - 1 = 2^s * d
@@ -139,12 +139,12 @@ def miller_rabin_primitive_test(number : int, iterations : int = 10) -> bool:
         for _ in range(power_of_two_factor):
             # next sequence = x^2 mod n
             next_sequnce = (curr_sequnce * curr_sequnce) % number
-            
+
             # Check if x = 1 or x = n-1 iff next sequence is x^2 = 1?
             if (next_sequnce == 1) and (curr_sequnce != 1) and \
-                (curr_sequnce != number - 1):
+                    (curr_sequnce != number - 1):
                 return False
-            
+
             # x = next sequence
             curr_sequnce = next_sequnce
 
@@ -154,7 +154,7 @@ def miller_rabin_primitive_test(number : int, iterations : int = 10) -> bool:
     return True
 
 
-def is_prime(number : int, accuracy_level : int = 10) -> bool:
+def is_prime(number: int, accuracy_level: int = 10) -> bool:
     """
     number         : int
     accuracy_level : int
@@ -182,9 +182,9 @@ def is_prime(number : int, accuracy_level : int = 10) -> bool:
 """
 
 
-def RSA_encryption(unicode : int,
-                   public_exponent : int,
-                   modulus : int) -> int:
+def RSA_encryption(unicode: int,
+                   public_exponent: int,
+                   modulus: int) -> int:
     """
     unicode         : int
     public_exponent : int
@@ -196,9 +196,9 @@ def RSA_encryption(unicode : int,
     return pow(unicode, public_exponent, modulus)
 
 
-def RSA_decryption(encrypt_code : int,
-                   private_exponent : int,
-                   modulus : int) -> int:
+def RSA_decryption(encrypt_code: int,
+                   private_exponent: int,
+                   modulus: int) -> int:
     """
     encrypt_code     : int
     private_exponent : int
@@ -210,7 +210,7 @@ def RSA_decryption(encrypt_code : int,
     return pow(encrypt_code, private_exponent, modulus)
 
 
-def semiprime_euler_totient(prime_1 : int, prime_2 : int) -> int:
+def semiprime_euler_totient(prime_1: int, prime_2: int) -> int:
     """
     prime_1 : int (prime number)
     prime_2 : int (prime number)
@@ -225,7 +225,7 @@ def semiprime_euler_totient(prime_1 : int, prime_2 : int) -> int:
     then ϕ(n) = p_1^{k_1-1}(p_1-1)p_2^{k_2-1}(p_2-1)...
 
     since our number is semi prime then
-    
+
     ϕ(number) = (prime_1 - 1)(prime_2 - 1)
 
     and then we return ϕ(number)
@@ -233,8 +233,8 @@ def semiprime_euler_totient(prime_1 : int, prime_2 : int) -> int:
     return (prime_1-1) * (prime_2-1)
 
 
-def modular_multiplicative_inverse(multiplyer : int,
-                                   modulus_base : int) -> int:
+def modular_multiplicative_inverse(multiplyer: int,
+                                   modulus_base: int) -> int:
     """
     multiplyer   : int
     modulus_base : int
@@ -244,12 +244,12 @@ def modular_multiplicative_inverse(multiplyer : int,
     multiplyer*x ≡ 1 (mod modulus_base)
 
     Then x ≡ multiplyer^(-1) (mod modulus_base)
-    
+
     this function find x and return it
     """
 
     if math.gcd(multiplyer, modulus_base) != 1:
-        return 0 # 0 for false since number*0 !≡ 1 (mod anything)
+        return 0  # 0 for false since number*0 !≡ 1 (mod anything)
 
     # Use Extended Euclidean algorithm
 
@@ -282,7 +282,7 @@ def modular_multiplicative_inverse(multiplyer : int,
 """
 
 
-def generating_prime(digits : int) -> int:
+def generating_prime(digits: int) -> int:
     """
     digits : int
 
@@ -295,7 +295,7 @@ def generating_prime(digits : int) -> int:
     return number
 
 
-def wait_for_right_input_receiver(*wanted_input : str) -> str:
+def wait_for_right_input_receiver(*wanted_input: str) -> str:
     """
     *wanted_input : character (1 character string)
 
@@ -309,7 +309,7 @@ def wait_for_right_input_receiver(*wanted_input : str) -> str:
     return choice
 
 
-def public_exponent_generator(euler_totient : int) -> int:
+def public_exponent_generator(euler_totient: int) -> int:
     """
     euler_totient : int
 
@@ -327,9 +327,9 @@ def public_exponent_generator(euler_totient : int) -> int:
     return public_exponent
 
 
-def private_exponent_finder(exponent : int,
-                            prime_1 : int,
-                            prime_2 : int) -> int:
+def private_exponent_finder(exponent: int,
+                            prime_1: int,
+                            prime_2: int) -> int:
     """
     exponent : int
     prime_1  : int (prime number)
@@ -340,7 +340,7 @@ def private_exponent_finder(exponent : int,
 
     return d
     """
-        
+
     totient = semiprime_euler_totient(prime_1, prime_2)
     private_exponent = modular_multiplicative_inverse(exponent, totient)
     if private_exponent == 0:

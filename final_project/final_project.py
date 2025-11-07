@@ -533,9 +533,9 @@ ause decryption problem and error)")
 
     else:
         print("How many digits of prime (p and q) that you will use for en\
-cryption? (please use more than 4, or it might cause error when decryption\
-): ", end="")
-        digits = int(input())
+cryption? (in integers and please use more than 4, or it might cause error\
+when decryption): ", end="")
+        digits = int(float(input()))
 
         prime_1 = generating_prime(digits)
         prime_2 = generating_prime(digits)

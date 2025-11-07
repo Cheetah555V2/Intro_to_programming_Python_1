@@ -581,9 +581,14 @@ def decrypting_a_massage_flow() -> None:
 encrypt character 1, encrypt character 2, encrypt character 3, ...
 Your encrypt character MUST be positive integer
 Example: 1436, 765482, 81523, 194638""")
-
+    
     encrypt_massage = \
         [int(encrypt_char) for encrypt_char in input().split(", ")]
+
+    if len(encrypt_massage) == 0:
+        print("Your decrypt massage is\n\nPress any key to go back to menu")
+        get_char()
+        return None
 
     clear_console()
 

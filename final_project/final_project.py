@@ -581,7 +581,7 @@ def decrypting_a_massage_flow() -> None:
 encrypt character 1, encrypt character 2, encrypt character 3, ...
 Your encrypt character MUST be positive integer
 Example: 1436, 765482, 81523, 194638""")
-    
+
     encrypt_massage = \
         [int(encrypt_char) for encrypt_char in input().split(", ")]
 
@@ -609,7 +609,7 @@ ss than 1,200,000 or there might problems with decryption)")
                                               private_exponent, modulus))
 
         # If decrypt_char cannot be convert to character
-        if decrypt_char not in range(0x110000):
+        if decrypt_char > (0x110000):
             print("You have input the wrong key\nPress any key to go back to m\
 enu")
             get_char()

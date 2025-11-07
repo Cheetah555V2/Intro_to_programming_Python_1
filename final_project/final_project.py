@@ -577,8 +577,7 @@ when decryption): ", end="")
 
 def decrypting_a_massage_flow() -> None:
     clear_console()
-    print("""What is your encrypt massage
-Please write it in form of
+    print("""What is your encrypt massage in 1 line in form of
 encrypt character 1, encrypt character 2, encrypt character 3, ...
 Your encrypt character MUST be positive integer
 Example: 1436, 765482, 81523, 194638""")
